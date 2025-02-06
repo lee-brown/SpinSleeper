@@ -1,6 +1,6 @@
 [package]
 name = "spinsleeper"
-version = "0.1.2"
+version = "0.1.0"
 edition = "2021"
 authors = ["Lee Brown <hello@leebrown.me>"]
 description = "A simple wrapper around rust spin_sleep"
