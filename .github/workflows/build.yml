@@ -1,8 +1,10 @@
-name: Build Wheels
+name: Build and Release Wheels
+
 on:
   push:
-    branches: [main]
-  pull_request:
+    tags:
+      - "v*" # Trigger on version tags like v1.0.0
+  workflow_dispatch: # Allow manual triggering
 
 jobs:
   build:
@@ -19,13 +21,31 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-
       - name: Build wheels
         run: |
           pip install maturin
           maturin build --release --out dist
-
       - uses: actions/upload-artifact@v4
         with:
           name: wheels-${{ matrix.os }}-py${{ matrix.python-version }}
           path: dist/*.whl
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed for creating releases
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/**/*.whl
+          generate_release_notes: true
+          draft: false
+          prerelease: false
