@@ -1,0 +1,20 @@
+[build-system]
+requires = ["maturin>=1.0"]
+build-backend = "maturin"
+
+[project]
+name = "spinsleeper"
+version = "0.1.0"
+description = "A simple wrapper around Rust spin_sleep"
+authors = [{ name = "Lee Brown", email = "hello@leebrown.me" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["rust", "python", "sleep", "spin"]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Rust",
+    "License :: OSI Approved :: MIT License",
+]
+
+[tool.maturin]
+bindings = "pyo3"
